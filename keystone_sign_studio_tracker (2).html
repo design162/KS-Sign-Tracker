@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Keystone Sign Studio — Architectural OS</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0f7ff',
+              100: '#e0effe',
+              500: '#0284c7',
+              600: '#0369a1',
+              700: '#075985',
+              800: '#0c4a6e',
+              900: '#0b1329',
+              950: '#060b18'
+            },
+            accent: {
+              gold: '#f59e0b',
+              emerald: '#10b981',
+              amber: '#d97706',
+              purple: '#8b5cf6'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Google Font Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .dark ::-webkit-scrollbar-thumb { background: #334155; }
+    
+    /* Print Styling */
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; color: black !important; }
+      .print-shadow-none { box-shadow: none !important; border: 1px solid #e2e8f0 !important; }
+      table { width: 100% !important; font-size: 10px !important; }
+    }
+  </style>
+</head>
+<body class="bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 min-h-full flex flex-col transition-colors duration-150">
+
+  <!-- Toast Notification Banner -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none no-print"></div>
+
+  <!-- Global Application Navbar -->
+  <header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-0 z-30 shadow-xs no-print">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 gap-4">
+        
+        <!-- App Logo & View Indicator -->
+        <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('portfolio')">
+          <div class="w-10 h-10 rounded-xl bg-slate-950 dark:bg-slate-800 text-white flex items-center justify-center font-black text-xl shadow-md border border-slate-800">
+            <span class="text-white">K</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-black text-slate-900 dark:text-white tracking-tight text-base sm:text-lg">KEYSTONE SIGN STUDIO</h1>
+              <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 rounded border border-slate-300 dark:border-slate-700">ARCHITECTURAL OS</span>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 hidden sm:block">Architectural Signage Engineering & Production Platform</p>
+          </div>
+        </div>
+
+        <!-- Global Control Actions -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- View Switcher Tabs -->
+          <button onclick="navigateTo('portfolio')" id="navBtnPortfolio" class="px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-900 text-white border-slate-900 dark:bg-slate-800 dark:border-slate-700">
+            <i class="fa-solid fa-layer-group"></i>
+            <span class="hidden md:inline">Portfolio View</span>
+          </button>
+          <button onclick="navigateTo('tracker')" id="navBtnTracker" class="px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700">
+            <i class="fa-solid fa-table-cells"></i>
+            <span class="hidden md:inline">Tracking Matrix</span>
+          </button>
+
+          <!-- Refresh Data Button -->
+          <button onclick="restoreDefaultData()" title="Restore Original Sample Data" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 transition-colors">
+            <i class="fa-solid fa-arrows-rotate text-sm"></i>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button onclick="toggleDarkMode()" title="Toggle Light/Dark Theme" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg border border-slate-300 dark:border-slate-700 transition-colors">
+            <i class="fa-solid fa-moon dark:hidden text-sm"></i>
+            <i class="fa-solid fa-sun hidden dark:block text-amber-400 text-sm"></i>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: HOME PAGE / ARCHITECTURAL PROJECTS PORTFOLIO VIEW        -->
+    <!-- ================================================================= -->
+    <div id="viewPortfolio" class="space-y-6">
+      
+      <!-- Portfolio Metric Summary Bar -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        
+        <!-- Portfolio Sites -->
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Portfolio Sites</div>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-3xl font-black text-slate-900 dark:text-white" id="portStatSites">3</span>
+            <span class="text-xs font-semibold px-2 py-0.5 rounded bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800">Active Sites</span>
+          </div>
+        </div>
+
+        <!-- Total Sign Types -->
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Sign Types</div>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-3xl font-black text-slate-900 dark:text-white" id="portStatTypes">13</span>
+            <span class="text-xs font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <i class="fa-solid fa-copy"></i> <span id="portStatRepeats">2</span> Repeat Runs
+            </span>
+          </div>
+        </div>
+
+        <!-- Total Scope Units -->
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Total Units (Scope)</div>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-3xl font-black text-slate-900 dark:text-white" id="portStatUnits">1,419</span>
+            <span class="text-xs font-semibold text-amber-600 dark:text-amber-400 flex items-center gap-1">
+              <i class="fa-solid fa-box-open"></i> <span id="portStatInProduction">477</span> in production
+            </span>
+          </div>
+        </div>
+
+        <!-- Overall Portfolio Completion -->
+        <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col justify-between border-l-4 border-l-emerald-500">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Overall Portfolio Completion</div>
+          <div class="flex items-baseline justify-between mt-2">
+            <span class="text-3xl font-black text-emerald-600 dark:text-emerald-400" id="portStatCompletion">16.4%</span>
+            <span class="text-[11px] font-semibold text-slate-400">4-Phase Weighted</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Portfolio Control Toolbar -->
+      <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row items-center justify-between gap-4">
+        
+        <!-- Search Input -->
+        <div class="relative w-full lg:w-80">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="portfolioSearchInput" oninput="filterPortfolio()" placeholder="Search project name, client, code, location or project lead..." class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+        </div>
+
+        <!-- Phase Tabs & Add Button -->
+        <div class="flex flex-wrap items-center gap-2 w-full lg:w-auto justify-between lg:justify-end">
+          
+          <div class="flex flex-wrap items-center gap-1 bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs">
+            <button onclick="setPortfolioPhaseFilter('ALL')" class="port-phase-tab px-3 py-1.5 rounded-lg font-bold transition-all bg-slate-900 text-white dark:bg-slate-800" data-phase="ALL">All Projects</button>
+            <button onclick="setPortfolioPhaseFilter('Design Phase')" class="port-phase-tab px-3 py-1.5 rounded-lg font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-phase="Design Phase">Design Phase</button>
+            <button onclick="setPortfolioPhaseFilter('Fabrication Phase')" class="port-phase-tab px-3 py-1.5 rounded-lg font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-phase="Fabrication Phase">Fabrication Phase</button>
+            <button onclick="setPortfolioPhaseFilter('Dispatch & Logistics')" class="port-phase-tab px-3 py-1.5 rounded-lg font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-phase="Dispatch & Logistics">Dispatch & Logistics</button>
+            <button onclick="setPortfolioPhaseFilter('Site Installation')" class="port-phase-tab px-3 py-1.5 rounded-lg font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white" data-phase="Site Installation">Site Installation</button>
+          </div>
+
+          <button onclick="openCreateProjectModal()" class="bg-slate-950 hover:bg-slate-800 dark:bg-brand-600 dark:hover:bg-brand-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-md transition-all flex items-center gap-2">
+            <i class="fa-solid fa-plus"></i> Create New Project
+          </button>
+
+        </div>
+
+      </div>
+
+      <!-- Portfolio Section Header -->
+      <div class="flex items-center justify-between">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          Architectural Projects Portfolio (<span id="portfolioCountText">3</span>)
+        </h2>
+        <p class="text-xs text-slate-400 italic">Click any project card to open its widescreen tracking matrix</p>
+      </div>
+
+      <!-- Projects Grid -->
+      <div id="projectsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamically Rendered Project Cards -->
+      </div>
+
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: DETAILED TRACKING MATRIX TABLE VIEW                       -->
+    <!-- ================================================================= -->
+    <div id="viewTracker" class="hidden space-y-6">
+      
+      <!-- Back Breadcrumb & Title Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-800 pb-4">
+        <div>
+          <button onclick="navigateTo('portfolio')" class="text-xs font-bold text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5 mb-1 transition-colors">
+            <i class="fa-solid fa-arrow-left"></i> All Projects Portfolio
+          </button>
+          <h1 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tight" id="trackerProjectTitle">
+            MINDSPACE 1 BUILDING, HYDERABAD — SIGNAGE INSTALLATION TRACKER
+          </h1>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Project Status & Manufacturing, Dispatch, Installation Completion Tracker</p>
+        </div>
+
+        <!-- Quick Export Bar -->
+        <div class="flex items-center gap-2 flex-wrap no-print">
+          <button onclick="exportHTMLBundle()" class="px-3 py-2 text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-800 dark:text-slate-200 rounded-xl transition-colors flex items-center gap-1.5 border border-slate-300 dark:border-slate-700">
+            <i class="fa-solid fa-code text-slate-500"></i> Export HTML/JS
+          </button>
+          <button onclick="exportCSV()" class="px-3 py-2 text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-800 dark:text-slate-200 rounded-xl transition-colors flex items-center gap-1.5 border border-slate-300 dark:border-slate-700">
+            <i class="fa-solid fa-download text-slate-500"></i> CSV
+          </button>
+          <button onclick="window.print()" class="px-3 py-2 text-xs font-bold bg-slate-200 dark:bg-slate-800 hover:bg-slate-300 text-slate-800 dark:text-slate-200 rounded-xl transition-colors flex items-center gap-1.5 border border-slate-300 dark:border-slate-700">
+            <i class="fa-solid fa-print text-slate-500"></i> Print / PDF
+          </button>
+          <button onclick="openAddSignModal()" class="px-4 py-2 text-xs font-bold bg-slate-950 hover:bg-slate-800 dark:bg-brand-600 dark:hover:bg-brand-700 text-white rounded-xl shadow-md transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-plus"></i> Add Sign Spec
+          </button>
+        </div>
+      </div>
+
+      <!-- Project Metadata Card Header -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <!-- Client -->
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-building text-slate-400"></i> Client
+          </div>
+          <div class="font-bold text-slate-900 dark:text-white text-sm" id="metaClient">Mindspace REIT</div>
+        </div>
+
+        <!-- Contractor -->
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-helmet-safety text-slate-400"></i> Contractor
+          </div>
+          <div class="font-bold text-slate-900 dark:text-white text-sm" id="metaContractor">Keystone Sign Studio</div>
+        </div>
+
+        <!-- Site Location -->
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-1">
+            <i class="fa-solid fa-location-dot text-slate-400"></i> Site Location
+          </div>
+          <div class="font-bold text-slate-900 dark:text-white text-xs truncate" id="metaLocation">Building 1, Mindspace Cyberabad, Madhapur, Hyderabad</div>
+        </div>
+
+        <!-- Project Lead & Edit -->
+        <div class="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex items-center justify-between">
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 mb-1">
+              <i class="fa-solid fa-user-check text-slate-400"></i> Project Lead
+            </div>
+            <div class="font-bold text-slate-900 dark:text-white text-xs" id="metaLead">Rajesh Kumar</div>
+            <div class="text-[10px] text-slate-400" id="metaPhone">+91 98490 12345</div>
+          </div>
+          <button onclick="openEditProjectModal()" title="Edit Project Details" class="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center transition-colors">
+            <i class="fa-solid fa-pen text-xs"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Search & Category Toolbar -->
+      <div class="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs flex flex-col md:flex-row items-center justify-between gap-3 no-print">
+        
+        <!-- Search Input -->
+        <div class="relative w-full md:w-72">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+          <input type="text" id="trackerSearchInput" oninput="renderTrackerView()" placeholder="Search sign type, code, location..." class="w-full pl-9 pr-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+          <!-- Category Dropdown -->
+          <select id="trackerCategorySelect" onchange="renderTrackerView()" class="text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl px-3 py-2 focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white font-semibold">
+            <option value="ALL">All Categories</option>
+            <option value="Exterior & Perimeter">Exterior & Perimeter</option>
+            <option value="Interior / Lobby">Interior / Lobby</option>
+            <option value="Basement & Parking">Basement & Parking</option>
+            <option value="Wayfinding Blades">Wayfinding Blades</option>
+            <option value="ADA Tactile">ADA Tactile</option>
+          </select>
+
+          <!-- Filter Pills -->
+          <div class="flex items-center bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold">
+            <button onclick="setTrackerBatchFilter('ALL')" class="tracker-batch-tab px-3 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800" data-batch="ALL">All Signs</button>
+            <button onclick="setTrackerBatchFilter('PARTIAL')" class="tracker-batch-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400" data-batch="PARTIAL">Partial Batches</button>
+            <button onclick="setTrackerBatchFilter('REPEAT')" class="tracker-batch-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400" data-batch="REPEAT">Repeat Runs</button>
+          </div>
+
+          <!-- Table/Cards View Toggle -->
+          <div class="flex items-center bg-slate-100 dark:bg-slate-950 p-1 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold">
+            <button onclick="setTrackerDisplayMode('table')" id="btnViewTable" class="px-2.5 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800">
+              <i class="fa-solid fa-table-list"></i> Table
+            </button>
+            <button onclick="setTrackerDisplayMode('cards')" id="btnViewCards" class="px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400">
+              <i class="fa-solid fa-border-all"></i> Cards
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Live Project KPI Metrics Summary Bar (Screenshot 1 Exact) -->
+      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+        
+        <!-- Total Sign Types -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Sign Types</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiTypes">10</div>
+          <div class="text-[10px] text-brand-600 dark:text-brand-400 font-bold" id="kpiRepeats">2 Repeat Runs</div>
+        </div>
+
+        <!-- Total Scope Units -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Total Units (Scope)</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiUnits">1,389</div>
+          <div class="text-[10px] text-amber-600 font-bold" id="kpiInProduction">448 in production</div>
+        </div>
+
+        <!-- Overall Completion % -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border-2 border-emerald-500 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Overall Completion</div>
+          <div class="text-2xl font-black text-emerald-600 dark:text-emerald-400 my-1" id="kpiOverallPct">15.0%</div>
+          <div class="text-[10px] text-slate-400">4-Phase Weighted</div>
+        </div>
+
+        <!-- 1. Design Phase % -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">1. Design Phase</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiDesignPct">100%</div>
+          <div class="text-[10px] text-slate-400 truncate">CAD Drafting & Approval</div>
+        </div>
+
+        <!-- 2. Fabrication % -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">2. Fabrication %</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiFabPct">0%</div>
+          <div class="text-[10px] text-slate-400 truncate" id="kpiFabSub">2 / 1389 units done</div>
+        </div>
+
+        <!-- 3. Dispatch % -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">3. Dispatch %</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiDispatchPct">0%</div>
+          <div class="text-[10px] text-slate-400 truncate" id="kpiDispatchSub">2 / 1389 units on-site</div>
+        </div>
+
+        <!-- 4. Installation % -->
+        <div class="bg-white dark:bg-slate-900 p-3.5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs text-center flex flex-col justify-between">
+          <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400">4. Installation %</div>
+          <div class="text-2xl font-black text-slate-900 dark:text-white my-1" id="kpiInstallPct">0%</div>
+          <div class="text-[10px] text-slate-400 truncate" id="kpiInstallSub">0 / 1389 erected</div>
+        </div>
+
+      </div>
+
+      <!-- Matrix Section Subheader -->
+      <div class="flex items-center justify-between pt-2">
+        <div class="flex items-center gap-2">
+          <div class="w-7 h-7 rounded-lg bg-slate-900 text-white flex items-center justify-center text-xs font-bold">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <div>
+            <h3 class="font-black text-slate-900 dark:text-white text-xs uppercase tracking-wider">SIGNAGE SPECIFICATION & 4-LEVEL TRACKING MATRIX</h3>
+            <p class="text-[11px] text-slate-400">Architectural Drawing Specs · Batch Releases · Lifecycle Stages</p>
+          </div>
+        </div>
+        <div class="text-xs font-bold text-slate-500 dark:text-slate-400">
+          Showing <span id="showingSignCount">10</span> of <span id="totalSignCount">10</span> signs
+        </div>
+      </div>
+
+      <!-- TABLE DISPLAY CONTAINER -->
+      <div id="trackerTableContainer" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse min-w-[1100px]">
+            <thead>
+              <tr class="bg-slate-950 text-white text-[10px] font-black uppercase tracking-wider border-b border-slate-800">
+                <th class="p-3.5 w-10 text-center">SR.</th>
+                <th class="p-3.5 w-52">SIGN TYPE & ORDER TAG</th>
+                <th class="p-3.5 w-32 text-center">ELEVATION DRAWING</th>
+                <th class="p-3.5 w-36 text-center">QUANTITIES (BATCH / TOTAL)</th>
+                <th class="p-3.5 w-52">DIMENSIONS & MATERIALS</th>
+                <th class="p-3.5 w-32">1. DESIGN PHASE</th>
+                <th class="p-3.5 w-24 text-center">DESIGN TICK</th>
+                <th class="p-3.5 w-32">2. FABRICATION PHASE</th>
+                <th class="p-3.5 w-24 text-center">MFG. TICK</th>
+                <th class="p-3.5 w-32">3. DISPATCH STATUS</th>
+                <th class="p-3.5 w-12 text-center no-print">ACTIONS</th>
+              </tr>
+            </thead>
+            <tbody id="trackerTableBody" class="divide-y divide-slate-200 dark:divide-slate-800 text-xs">
+              <!-- Dynamically populated table rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CARDS DISPLAY CONTAINER (Alternative view toggle) -->
+      <div id="trackerCardsContainer" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Dynamically populated sign cards -->
+      </div>
+
+      <!-- Empty State View -->
+      <div id="trackerEmptyState" class="hidden p-12 text-center bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800">
+        <div class="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-2xl text-slate-400 mx-auto mb-3">
+          <i class="fa-solid fa-folder-open"></i>
+        </div>
+        <h4 class="text-base font-bold text-slate-900 dark:text-white">No Sign Specifications Match Your Criteria</h4>
+        <p class="text-xs text-slate-400 mt-1 mb-4">Try clearing search filters or add a new sign specification to this project.</p>
+        <button onclick="openAddSignModal()" class="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors">
+          + Add New Sign Specification
+        </button>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- ================================================================= -->
+  <!-- MODALS & DIALOG WORKFLOWS                                         -->
+  <!-- ================================================================= -->
+
+  <!-- 1. CREATE NEW PROJECT MODAL -->
+  <div id="modalCreateProject" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+        <h3 class="font-black text-slate-900 dark:text-white text-base flex items-center gap-2">
+          <i class="fa-solid fa-building-circle-check text-brand-500"></i> Create New Architectural Project
+        </h3>
+        <button onclick="closeCreateProjectModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form onsubmit="handleCreateProjectSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project Name *</label>
+          <input type="text" id="newProjName" required placeholder="e.g. OAKRIDGE INTERNATIONAL CAMPUS — WAYFINDING" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Client Name *</label>
+            <input type="text" id="newProjClient" required placeholder="e.g. Oakridge Educational REIT" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project Level Stage</label>
+            <select id="newProjLevel" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white font-semibold">
+              <option value="Level 1: Design Phase">Level 1: Design Phase</option>
+              <option value="Level 2: Fabrication Phase">Level 2: Fabrication Phase</option>
+              <option value="Level 3: Dispatch & Logistics">Level 3: Dispatch & Logistics</option>
+              <option value="Level 4: Site Installation">Level 4: Site Installation</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project In-Charge *</label>
+            <input type="text" id="newProjLead" required placeholder="e.g. Suresh Kumar" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Lead Phone Number</label>
+            <input type="text" id="newProjPhone" placeholder="+91 98490 99999" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Site Location</label>
+            <input type="text" id="newProjLocation" placeholder="Gachibowli, Hyderabad" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Target Completion Date</label>
+            <input type="text" id="newProjTarget" placeholder="20 Dec 2026" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="closeCreateProjectModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-slate-950 dark:bg-brand-600 text-white rounded-xl hover:bg-slate-800 shadow-md">Create Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. EDIT PROJECT METADATA MODAL -->
+  <div id="modalEditProject" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-lg w-full border border-slate-200 dark:border-slate-800 overflow-hidden">
+      <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+        <h3 class="font-black text-slate-900 dark:text-white text-base flex items-center gap-2">
+          <i class="fa-solid fa-pen-to-square text-brand-500"></i> Edit Project Metadata
+        </h3>
+        <button onclick="closeEditProjectModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form onsubmit="handleEditProjectSubmit(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project Name</label>
+          <input type="text" id="editProjName" required class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Client Name</label>
+            <input type="text" id="editProjClient" required class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Contractor</label>
+            <input type="text" id="editProjContractor" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Site Location</label>
+            <input type="text" id="editProjLocation" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project Stage Level</label>
+            <select id="editProjLevel" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white font-semibold">
+              <option value="Level 1: Design Phase">Level 1: Design Phase</option>
+              <option value="Level 2: Fabrication Phase">Level 2: Fabrication Phase</option>
+              <option value="Level 3: Dispatch & Logistics">Level 3: Dispatch & Logistics</option>
+              <option value="Level 4: Site Installation">Level 4: Site Installation</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Project In-Charge</label>
+            <input type="text" id="editProjLead" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Lead Phone</label>
+            <input type="text" id="editProjPhone" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="closeEditProjectModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-slate-950 dark:bg-brand-600 text-white rounded-xl hover:bg-slate-800 shadow-md">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. ADD NEW SIGN SPECIFICATION MODAL -->
+  <div id="modalAddSign" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-2xl w-full border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+        <h3 class="font-black text-slate-900 dark:text-white text-base flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-brand-500"></i> Add New Sign Specification
+        </h3>
+        <button onclick="closeAddSignModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-white">
+          <i class="fa-solid fa-xmark text-lg"></i>
+        </button>
+      </div>
+      <form onsubmit="handleAddSignSubmit(event)" class="p-6 overflow-y-auto space-y-4">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Sign Code *</label>
+            <input type="text" id="newSignCode" required placeholder="e.g. EXT-PYL-03" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Sign Title *</label>
+            <input type="text" id="newSignTitle" required placeholder="e.g. Parking Entrance Monolith" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Category *</label>
+            <select id="newSignCategory" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white font-semibold">
+              <option value="Exterior & Perimeter">Exterior & Perimeter</option>
+              <option value="Interior / Lobby">Interior / Lobby</option>
+              <option value="Basement & Parking">Basement & Parking</option>
+              <option value="Wayfinding Blades">Wayfinding Blades</option>
+              <option value="ADA Tactile">ADA Tactile</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Batch Qty *</label>
+            <input type="number" id="newSignBatchQty" min="1" value="2" required class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Total Scope Qty *</label>
+            <input type="number" id="newSignTotalScope" min="1" value="10" required class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Location Details *</label>
+          <input type="text" id="newSignLocation" required placeholder="e.g. Tower 2 Main Lobby Entry Boulevard..." class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Dimensions Spec</label>
+            <input type="text" id="newSignDimensions" placeholder="1000mm (W) x 3000mm (H) x 150mm (D)" class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Materials & Finishes</label>
+            <input type="text" id="newSignMaterials" placeholder="ACP Cladding, LED Backlit, MS Framework..." class="w-full px-3 py-2 text-xs bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+          </div>
+        </div>
+
+        <!-- IMAGE UPLOAD DROPZONE -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">Elevation Drawing Image</label>
+          <div id="addSignDropzone" onclick="document.getElementById('addSignFileInput').click()" class="border-2 border-dashed border-slate-300 dark:border-slate-800 hover:border-slate-900 dark:hover:border-slate-400 rounded-2xl p-4 text-center cursor-pointer transition-colors bg-slate-50 dark:bg-slate-950/50 flex flex-col items-center justify-center gap-2">
+            <input type="file" id="addSignFileInput" accept="image/*" class="hidden" onchange="handleAddSignFileSelect(event)">
+            
+            <div id="dropzonePrompt" class="flex flex-col items-center">
+              <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-1"></i>
+              <p class="text-xs font-bold text-slate-700 dark:text-slate-200">Click to upload or drag & drop image</p>
+              <p class="text-[10px] text-slate-400">PNG, JPG, WEBP or SVG CAD elevation sketches</p>
+            </div>
+
+            <div id="dropzonePreview" class="hidden flex items-center gap-3 w-full bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800">
+              <img id="addSignPreviewImg" src="" alt="Preview" class="w-12 h-12 object-cover rounded-lg border border-slate-200 dark:border-slate-800">
+              <div class="text-left flex-1 min-w-0">
+                <p id="addSignFileName" class="text-xs font-bold text-slate-800 dark:text-slate-200 truncate"></p>
+                <p class="text-[10px] text-emerald-600 font-bold"><i class="fa-solid fa-circle-check"></i> Image processed</p>
+              </div>
+              <button type="button" onclick="clearAddSignImage(event)" class="text-slate-400 hover:text-red-500 p-1">
+                <i class="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-2 pt-1">
+          <div class="flex items-center gap-2">
+            <input type="checkbox" id="newSignIsRepeat" onchange="toggleRepeatNoteField()" class="rounded border-slate-300 text-slate-900 focus:ring-slate-900 h-4 w-4">
+            <label for="newSignIsRepeat" class="text-xs font-bold text-slate-700 dark:text-slate-300">Mark as Repeat Run / Batch Release</label>
+          </div>
+          <div id="repeatNoteContainer" class="hidden">
+            <input type="text" id="newSignRepeatNote" placeholder="e.g. REV 2 REPEAT: Repeat run: 35 units released for B1 first..." class="w-full px-3 py-2 text-xs bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 rounded-xl text-amber-900 dark:text-amber-200">
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+          <button type="button" onclick="closeAddSignModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">Cancel</button>
+          <button type="submit" class="px-5 py-2 text-xs font-bold bg-slate-950 dark:bg-brand-600 text-white rounded-xl hover:bg-slate-800 shadow-md">Save Specification</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <!-- Hidden Row File Input for instant camera upload -->
+  <input type="file" id="rowFileInput" accept="image/*" class="hidden" onchange="handleRowFileSelect(event)">
+
+  <!-- 4. LIGHTBOX IMAGE PREVIEW MODAL -->
+  <div id="modalLightbox" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-3xl w-full border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950">
+        <div>
+          <h3 id="lbTitle" class="font-black text-slate-900 dark:text-white text-sm sm:text-base"></h3>
+          <p id="lbSubtitle" class="text-xs text-slate-400"></p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="lbChangeImgBtn" class="px-3 py-1.5 text-xs font-bold bg-slate-900 dark:bg-brand-600 text-white rounded-lg hover:bg-slate-800 transition-colors flex items-center gap-1.5">
+            <i class="fa-solid fa-camera"></i> Change Image
+          </button>
+          <button onclick="closeLightboxModal()" class="w-8 h-8 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 dark:hover:text-white">
+            <i class="fa-solid fa-xmark text-lg"></i>
+          </button>
+        </div>
+      </div>
+      <div class="p-6 overflow-y-auto flex items-center justify-center bg-slate-900/90 min-h-[320px]">
+        <img id="lbImage" src="" alt="Elevation Drawing" class="max-h-[60vh] max-w-full object-contain rounded-lg shadow-xl border border-slate-700">
+      </div>
+      <div id="lbSpecs" class="p-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-xs grid grid-cols-2 sm:grid-cols-4 gap-3 text-slate-600 dark:text-slate-300">
+        <!-- Specs populated dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. DELETE SIGN CONFIRMATION MODAL -->
+  <div id="modalDeleteSign" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 dark:border-slate-800 p-6">
+      <div class="flex items-center gap-4 text-red-600 dark:text-red-400 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-trash-can"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-slate-900 dark:text-white">Delete Sign Specification?</h3>
+          <p class="text-xs text-slate-400">Action cannot be undone</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-300 mb-6" id="deleteSignMsg">
+        Are you sure you want to remove this sign item from the project matrix?
+      </p>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeDeleteSignModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">Cancel</button>
+        <button id="btnConfirmDeleteSign" class="px-5 py-2 text-xs font-bold bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md transition-colors">Delete Row</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. DELETE PROJECT CONFIRMATION MODAL -->
+  <div id="modalDeleteProject" class="fixed inset-0 bg-slate-950/70 backdrop-blur-xs z-50 hidden flex items-center justify-center p-4 no-print">
+    <div class="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl max-w-md w-full border border-slate-200 dark:border-slate-800 p-6">
+      <div class="flex items-center gap-4 text-red-600 dark:text-red-400 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-red-100 dark:bg-red-950/50 flex items-center justify-center text-xl font-bold">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+        </div>
+        <div>
+          <h3 class="text-base font-black text-slate-900 dark:text-white">Delete Project?</h3>
+          <p class="text-xs text-slate-400">Removes project and all associated signage matrix rows</p>
+        </div>
+      </div>
+      <p class="text-xs text-slate-600 dark:text-slate-300 mb-6" id="deleteProjectMsg">
+        Are you sure you want to remove this project?
+      </p>
+      <div class="flex justify-end gap-2">
+        <button onclick="closeDeleteProjectModal()" class="px-4 py-2 text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">Cancel</button>
+        <button id="btnConfirmDeleteProject" class="px-5 py-2 text-xs font-bold bg-red-600 hover:bg-red-700 text-white rounded-xl shadow-md transition-colors">Delete Project</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Engine -->
+  <script>
+    // Storage Constant
+    const STORAGE_KEY = 'keystone_sign_studio_os_v3';
+
+    // Vector Graphics for CAD Drawings
+    const VECTOR_DRAWINGS = {
+      pylon1: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%230f172a"/><rect x="65" y="20" width="70" height="180" rx="4" fill="%231e293b" stroke="%2338bdf8" stroke-width="3"/><rect x="75" y="35" width="50" height="30" rx="3" fill="%230284c7"/><text x="100" y="53" fill="white" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">P</text><line x1="75" y1="85" x2="125" y2="85" stroke="%23f59e0b" stroke-width="3"/><line x1="75" y1="105" x2="125" y2="105" stroke="%2364748b" stroke-width="2"/><line x1="75" y1="120" x2="115" y2="120" stroke="%2364748b" stroke-width="2"/><rect x="80" y="150" width="40" height="40" rx="2" fill="%23334155"/><path d="M100 160 L100 180 M90 170 L100 160 L110 170" stroke="%2338bdf8" stroke-width="2"/></svg>`,
+      pylon2: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%230f172a"/><rect x="50" y="30" width="100" height="170" rx="4" fill="%2327272a" stroke="%23f59e0b" stroke-width="3"/><rect x="60" y="45" width="80" height="40" fill="%2318181b" stroke="%23f59e0b"/><text x="100" y="68" fill="%23f59e0b" font-family="sans-serif" font-size="14" font-weight="bold" text-anchor="middle">TOWER 1</text><line x1="60" y1="110" x2="140" y2="110" stroke="%2371717a" stroke-width="2"/><line x1="60" y1="130" x2="130" y2="130" stroke="%2371717a" stroke-width="2"/><line x1="60" y1="150" x2="120" y2="150" stroke="%2371717a" stroke-width="2"/></svg>`,
+      glass: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%230f172a"/><rect x="20" y="40" width="160" height="150" rx="2" fill="%231e293b" stroke="%23475569" stroke-width="2"/><rect x="20" y="90" width="160" height="50" fill="%2338bdf8" fill-opacity="0.2" stroke="%2338bdf8" stroke-dasharray="4 4"/><text x="100" y="120" fill="%23e0effe" font-family="sans-serif" font-size="11" font-weight="bold" text-anchor="middle">FROSTED BAND 600mm</text></svg>`,
+      suspended: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%230f172a"/><line x1="60" y1="20" x2="60" y2="80" stroke="%2394a3b8" stroke-width="2"/><line x1="140" y1="20" x2="140" y2="80" stroke="%2394a3b8" stroke-width="2"/><rect x="30" y="80" width="140" height="80" rx="6" fill="%231e293b" stroke="%2310b981" stroke-width="3"/><rect x="40" y="95" width="30" height="30" rx="3" fill="%230284c7"/><text x="55" y="115" fill="white" font-family="sans-serif" font-size="12" font-weight="bold" text-anchor="middle">P</text><text x="120" y="115" fill="white" font-family="sans-serif" font-size="10" font-weight="bold" text-anchor="middle">BASEMENT B1</text><path d="M140 135 L155 135 M150 130 L155 135 L150 140" stroke="%2310b981" stroke-width="2"/></svg>`,
+      directory: `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="240" viewBox="0 0 200 240" fill="none"><rect width="200" height="240" fill="%230f172a"/><rect x="45" y="25" width="110" height="190" rx="4" fill="%2318181b" stroke="%23e4e4e7" stroke-width="2"/><rect x="55" y="40" width="90" height="25" fill="%2327272a"/><text x="100" y="56" fill="%23f59e0b" font-family="sans-serif" font-size="9" font-weight="bold" text-anchor="middle">DIRECTORY</text><line x1="55" y1="80" x2="145" y2="80" stroke="%2352525b"/><line x1="55" y1="100" x2="145" y2="100" stroke="%2352525b"/><line x1="55" y1="120" x2="145" y2="120" stroke="%2352525b"/><line x1="55" y1="140" x2="145" y2="140" stroke="%2352525b"/></svg>`
+    };
+
+    // Initial Mock Projects State (Derived from Screenshot details)
+    const INITIAL_PROJECTS = {
+      'proj_1': {
+        id: 'proj_1',
+        name: 'MINDSPACE 1 BUILDING, HYDERABAD — SIGNAGE INSTALLATION TRACKER',
+        level: 'Level 2: Fabrication Phase',
+        client: 'Mindspace REIT',
+        contractor: 'Keystone Sign Studio',
+        location: 'Building 1, Mindspace Cyberabad, Madhapur, Hyderabad',
+        targetDate: '15 Nov 2026',
+        lastUpdated: '15 Oct 2026',
+        lead: 'Rajesh Kumar',
+        leadRole: 'Project Manager & Site Lead',
+        phone: '+91 98490 12345',
+        signs: [
+          {
+            id: 'sgn_1',
+            code: 'EXT-PYL-01',
+            title: 'Vehicular Directional Pylon Sign',
+            category: 'Exterior & Perimeter',
+            location: 'Loc: Main entry boulevard, roundabout...',
+            batchQty: 4,
+            totalScope: 10,
+            dimensions: '1000mm (W) x 3000mm (H) x 150mm (D)',
+            materials: 'Dark bronze powder-coated ACP, internal MS steel framework, gold directional arrows, illuminated acrylic...',
+            designPhase: 'Pending',
+            designTick: 'Done',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'In Transit',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon1
+          },
+          {
+            id: 'sgn_2',
+            code: 'EXT-PYL-02',
+            title: 'Drop off Pylon Sign',
+            category: 'Exterior & Perimeter',
+            location: 'Loc: Tower 1 VIP porch and main lobby...',
+            batchQty: 2,
+            totalScope: 2,
+            dimensions: '610mm (W) x 2438mm (H) x 100mm (D)',
+            materials: 'Bronze aluminum panel, 100mm gold anodized aluminum edge trim, reflective vinyl graphics',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon2
+          },
+          {
+            id: 'sgn_3',
+            code: 'INT-LOB-01',
+            title: 'Lobby Glass Graphics',
+            category: 'Interior / Lobby',
+            location: 'Loc: Ground Floor Grand Atrium double-heig...',
+            batchQty: 1,
+            totalScope: 1,
+            dimensions: '9000mm (W) x 5500mm (H) - Frosted band 600mm H',
+            materials: '3M Dusted Crystal manifestation film, custom geometric CAD plot, bubble-free wet application',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.glass
+          },
+          {
+            id: 'sgn_4',
+            code: 'BMT-WAY-01',
+            title: 'Basement Suspended Directional Signage',
+            category: 'Basement & Parking',
+            location: 'Loc: Basement levels B1, B2, B3 driveways an...',
+            batchQty: 35,
+            totalScope: 85,
+            dimensions: '1800mm (W) x 400mm (H) x 80mm (D)',
+            materials: 'Extruded aluminum profile with ceiling suspension wire rope kit, LED backlit',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: true,
+            repeatNote: 'REV 2 REPEAT: Repeat run: 35 units released for B1 first, balance 50 units for B2/B3 next week.',
+            image: VECTOR_DRAWINGS.suspended
+          },
+          {
+            id: 'sgn_5',
+            code: 'INT-DIR-01',
+            title: 'Lift Lobby Directory & Tenant Index Board',
+            category: 'Interior / Lobby',
+            location: 'Loc: Floors 1 through 18 passenger elevator...',
+            batchQty: 6,
+            totalScope: 18,
+            dimensions: '1200mm (W) x 2000mm (H)',
+            materials: 'Magnetic tempered glass panel with interchangeable brass modular slat inserts',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.directory
+          },
+          {
+            id: 'sgn_6',
+            code: 'EXT-FLA-01',
+            title: 'Flagpole Campus Flag Signage',
+            category: 'Exterior & Perimeter',
+            location: 'Loc: Entry Plaza East Lawn',
+            batchQty: 3,
+            totalScope: 3,
+            dimensions: '6000mm Pole Height',
+            materials: 'Stainless steel 316 grade pole with brass halyard fittings',
+            designPhase: 'CAD Drafting & Approval',
+            designTick: 'Done',
+            fabPhase: 'In Production',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon1
+          },
+          {
+            id: 'sgn_7',
+            code: 'INT-ADA-01',
+            title: 'Tactile Braille Restroom Plaque',
+            category: 'ADA Tactile',
+            location: 'Loc: All Floor Cores',
+            batchQty: 40,
+            totalScope: 120,
+            dimensions: '200mm x 200mm x 8mm',
+            materials: 'Thermoformed matte acrylic with Grade 2 Braille text',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Completed',
+            mfgTick: 'Done',
+            dispatchStatus: 'On-Site Delivered',
+            isRepeat: true,
+            repeatNote: 'REV 1 REPEAT: Batch 1 released',
+            image: VECTOR_DRAWINGS.suspended
+          },
+          {
+            id: 'sgn_8',
+            code: 'INT-BLD-02',
+            title: 'Wayfinding Blade Projecting Sign',
+            category: 'Wayfinding Blades',
+            location: 'Loc: Corridor Intersections',
+            batchQty: 15,
+            totalScope: 45,
+            dimensions: '400mm x 300mm',
+            materials: 'Anodized aluminum frame with magnetic insert graphics',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'In Production',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon2
+          },
+          {
+            id: 'sgn_9',
+            code: 'EXT-MON-01',
+            title: 'Substation & Utility Warning Graphics',
+            category: 'Exterior & Perimeter',
+            location: 'Loc: Rear Utility Perimeter',
+            batchQty: 10,
+            totalScope: 10,
+            dimensions: '600mm x 400mm',
+            materials: 'Reflective aluminum sheet vinyl coated',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Completed',
+            mfgTick: 'Done',
+            dispatchStatus: 'Installed',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.glass
+          },
+          {
+            id: 'sgn_10',
+            code: 'INT-FIRE-01',
+            title: 'Photoluminescent Exit Route Map',
+            category: 'Interior / Lobby',
+            location: 'Loc: Emergency Exit Doors',
+            batchQty: 100,
+            totalScope: 1095,
+            dimensions: '300mm x 300mm',
+            materials: 'Photoluminescent acrylic board flush mount',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'In Production',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.directory
+          }
+        ]
+      },
+      'proj_2': {
+        id: 'proj_2',
+        name: 'CYBER TOWERS TECH PARK (PHASE 2) — INTERIOR WAYFINDING',
+        level: 'Level 4: Site Installation',
+        client: 'L&T Infotech Realty',
+        contractor: 'Keystone Sign Studio',
+        location: 'Hitec City Main Road, Hyderabad',
+        targetDate: '30 Nov 2026',
+        lastUpdated: '12 Oct 2026',
+        lead: 'Priya Sharma',
+        leadRole: 'Project Lead',
+        phone: '+91 98490 23456',
+        signs: [
+          {
+            id: 'sgn_201',
+            code: 'CT-DIR-01',
+            title: 'Elevator Lobby Directories',
+            category: 'Interior / Lobby',
+            location: 'Loc: Block A & B Lobbies',
+            batchQty: 12,
+            totalScope: 12,
+            dimensions: '1000mm x 1800mm',
+            materials: 'Brushed steel with acrylic face',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Completed',
+            mfgTick: 'Done',
+            dispatchStatus: 'Installed',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.directory
+          },
+          {
+            id: 'sgn_202',
+            code: 'CT-BLD-04',
+            title: 'Directional Corridor Blades',
+            category: 'Wayfinding Blades',
+            location: 'Loc: Floors 1-8 corridors',
+            batchQty: 16,
+            totalScope: 16,
+            dimensions: '500mm x 250mm',
+            materials: 'Aluminum extruded blade',
+            designPhase: 'Design Sign-off',
+            designTick: 'Done',
+            fabPhase: 'Completed',
+            mfgTick: 'Done',
+            dispatchStatus: 'In Transit',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon2
+          }
+        ]
+      },
+      'proj_3': {
+        id: 'proj_3',
+        name: 'PRESTIGE SKYTECH COMMERCIAL TOWERS — FAÇADE & CAMPUS IDENTITY',
+        level: 'Level 1: Design Phase',
+        client: 'Prestige Estates Projects Ltd',
+        contractor: 'Keystone Sign Studio',
+        location: 'Financial District, Nanakramguda, Hyderabad',
+        targetDate: '10 Dec 2026',
+        lastUpdated: '10 Oct 2026',
+        lead: 'Vikram Rao',
+        leadRole: 'Project Lead',
+        phone: '+91 98490 34567',
+        signs: [
+          {
+            id: 'sgn_301',
+            code: 'PS-SKY-01',
+            title: 'Skyline Halo Letters Logo',
+            category: 'Exterior & Perimeter',
+            location: 'Loc: Tower Roof Crown',
+            batchQty: 1,
+            totalScope: 2,
+            dimensions: '12000mm x 3000mm',
+            materials: 'LED Backlit channel letters IP67',
+            designPhase: 'CAD Drafting & Approval',
+            designTick: 'Pending',
+            fabPhase: 'Pending',
+            mfgTick: 'Pending',
+            dispatchStatus: 'Pending',
+            isRepeat: false,
+            repeatNote: '',
+            image: VECTOR_DRAWINGS.pylon1
+          }
+        ]
+      }
+    };
+
+    // Application Global State
+    let state = {
+      currentView: 'portfolio', // 'portfolio' | 'tracker'
+      activeProjectId: 'proj_1',
+      portfolioPhaseFilter: 'ALL',
+      portfolioSearch: '',
+      trackerSearch: '',
+      trackerCategory: 'ALL',
+      trackerBatchFilter: 'ALL',
+      trackerDisplayMode: 'table', // 'table' | 'cards'
+      tempAddSignImageData: null,
+      pendingDeleteSignId: null,
+      pendingDeleteProjectId: null,
+      pendingRowUploadSignId: null,
+      projects: {}
+    };
+
+    // Initialize Application
+    window.onload = function() {
+      loadState();
+      renderApp();
+      setupAddSignDropzone();
+    };
+
+    function loadState() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          state.projects = JSON.parse(stored);
+        } catch(e) {
+          console.error('Error parsing localStorage, loading defaults:', e);
+          state.projects = JSON.parse(JSON.stringify(INITIAL_PROJECTS));
+        }
+      } else {
+        state.projects = JSON.parse(JSON.stringify(INITIAL_PROJECTS));
+        saveState();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.projects));
+    }
+
+    function restoreDefaultData() {
+      if (confirm('Restore initial sample projects & sign matrix data?')) {
+        state.projects = JSON.parse(JSON.stringify(INITIAL_PROJECTS));
+        state.activeProjectId = 'proj_1';
+        saveState();
+        renderApp();
+        showToast('Restored sample data successfully', 'info');
+      }
+    }
+
+    // Navigation Control
+    function navigateTo(view, projectId = null) {
+      state.currentView = view;
+      if (projectId) state.activeProjectId = projectId;
+
+      document.getElementById('viewPortfolio').classList.toggle('hidden', view !== 'portfolio');
+      document.getElementById('viewTracker').classList.toggle('hidden', view !== 'tracker');
+
+      // Update Nav Buttons
+      const btnPort = document.getElementById('navBtnPortfolio');
+      const btnTrack = document.getElementById('navBtnTracker');
+
+      if (view === 'portfolio') {
+        btnPort.className = 'px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-900 text-white border-slate-900 dark:bg-slate-800 dark:border-slate-700';
+        btnTrack.className = 'px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700';
+      } else {
+        btnTrack.className = 'px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-900 text-white border-slate-900 dark:bg-slate-800 dark:border-slate-700';
+        btnPort.className = 'px-3 py-1.5 text-xs font-bold rounded-lg border transition-all flex items-center gap-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 dark:bg-slate-900 dark:text-slate-300 dark:border-slate-700';
+      }
+
+      renderApp();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Calculation Engine
+    function calculateSignCompletion(sign) {
+      let dPct = sign.designTick === 'Done' ? 100 : (sign.designPhase === 'CAD Drafting & Approval' ? 50 : 0);
+      let fPct = sign.fabPhase === 'Completed' ? 100 : (sign.fabPhase === 'In Production' ? 50 : 0);
+      let dispPct = sign.dispatchStatus === 'Installed' ? 100 : (sign.dispatchStatus === 'On-Site Delivered' ? 75 : (sign.dispatchStatus === 'In Transit' ? 50 : 0));
+      
+      // 4-Phase Weighted Calculation: Design 20%, Fabrication 40%, Dispatch 20%, Installation 20%
+      let total = (dPct * 0.20) + (fPct * 0.40) + (dispPct * 0.40);
+      return Math.round(total);
+    }
+
+    function calculateProjectMetrics(proj) {
+      const signs = proj.signs || [];
+      let totalTypes = signs.length;
+      let totalScope = 0;
+      let inProductionUnits = 0;
+      let repeatCount = 0;
+
+      let sumDesign = 0;
+      let sumFab = 0;
+      let sumDisp = 0;
+      let sumInstall = 0;
+
+      let fabDoneUnits = 0;
+      let dispDoneUnits = 0;
+      let installDoneUnits = 0;
+
+      signs.forEach(s => {
+        let scope = parseInt(s.totalScope) || 1;
+        let batch = parseInt(s.batchQty) || 1;
+        totalScope += scope;
+
+        if (s.isRepeat) repeatCount++;
+        if (s.fabPhase === 'In Production') inProductionUnits += batch;
+
+        let dVal = s.designTick === 'Done' ? 100 : 0;
+        let fVal = s.fabPhase === 'Completed' ? 100 : (s.fabPhase === 'In Production' ? 50 : 0);
+        let dispVal = (s.dispatchStatus === 'On-Site Delivered' || s.dispatchStatus === 'Installed') ? 100 : (s.dispatchStatus === 'In Transit' ? 50 : 0);
+        let instVal = s.dispatchStatus === 'Installed' ? 100 : 0;
+
+        sumDesign += (dVal * scope);
+        sumFab += (fVal * scope);
+        sumDisp += (dispVal * scope);
+        sumInstall += (instVal * scope);
+
+        if (fVal === 100) fabDoneUnits += scope;
+        if (dispVal === 100) dispDoneUnits += scope;
+        if (instVal === 100) installDoneUnits += scope;
+      });
+
+      let avgDesign = totalScope > 0 ? Math.round(sumDesign / totalScope) : 0;
+      let avgFab = totalScope > 0 ? Math.round(sumFab / totalScope) : 0;
+      let avgDisp = totalScope > 0 ? Math.round(sumDisp / totalScope) : 0;
+      let avgInstall = totalScope > 0 ? Math.round(sumInstall / totalScope) : 0;
+
+      // Overall weighted project completion
+      let overallWeighted = Math.round((avgDesign * 0.20) + (avgFab * 0.40) + (avgDisp * 0.20) + (avgInstall * 0.20));
+
+      return {
+        totalTypes,
+        totalScope,
+        inProductionUnits,
+        repeatCount,
+        avgDesign,
+        avgFab,
+        avgDisp,
+        avgInstall,
+        overallWeighted,
+        fabDoneUnits,
+        dispDoneUnits,
+        installDoneUnits
+      };
+    }
+
+    // Main Render Dispatcher
+    function renderApp() {
+      if (state.currentView === 'portfolio') {
+        renderPortfolioView();
+      } else {
+        renderTrackerView();
+      }
+    }
+
+    // RENDER VIEW 1: PORTFOLIO VIEW
+    function renderPortfolioView() {
+      const grid = document.getElementById('projectsGrid');
+      grid.innerHTML = '';
+
+      const projectsArr = Object.values(state.projects);
+
+      // Portfolio Aggregations
+      let totalSites = projectsArr.length;
+      let totalTypes = 0;
+      let totalScope = 0;
+      let totalInProd = 0;
+      let totalRepeats = 0;
+      let weightedSum = 0;
+
+      projectsArr.forEach(p => {
+        const m = calculateProjectMetrics(p);
+        totalTypes += m.totalTypes;
+        totalScope += m.totalScope;
+        totalInProd += m.inProductionUnits;
+        totalRepeats += m.repeatCount;
+        weightedSum += (m.overallWeighted * m.totalScope);
+      });
+
+      let overallPortfolioPct = totalScope > 0 ? (weightedSum / totalScope).toFixed(1) : '0.0';
+
+      // Update Portfolio Stat Cards
+      document.getElementById('portStatSites').textContent = totalSites;
+      document.getElementById('portStatTypes').textContent = totalTypes;
+      document.getElementById('portStatRepeats').textContent = totalRepeats;
+      document.getElementById('portStatUnits').textContent = totalScope.toLocaleString();
+      document.getElementById('portStatInProduction').textContent = totalInProd;
+      document.getElementById('portStatCompletion').textContent = `${overallPortfolioPct}%`;
+
+      // Filter Projects
+      const query = (document.getElementById('portfolioSearchInput').value || '').toLowerCase();
+      const phaseFilter = state.portfolioPhaseFilter;
+
+      const filtered = projectsArr.filter(p => {
+        const matchesQuery = !query || 
+          p.name.toLowerCase().includes(query) ||
+          p.client.toLowerCase().includes(query) ||
+          p.lead.toLowerCase().includes(query) ||
+          p.location.toLowerCase().includes(query);
+
+        const matchesPhase = phaseFilter === 'ALL' || p.level.includes(phaseFilter);
+
+        return matchesQuery && matchesPhase;
+      });
+
+      document.getElementById('portfolioCountText').textContent = filtered.length;
+
+      // Render Cards Grid
+      filtered.forEach(p => {
+        const m = calculateProjectMetrics(p);
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm overflow-hidden flex flex-col justify-between hover:border-slate-400 dark:hover:border-slate-700 transition-all group';
+
+        card.innerHTML = `
+          <div class="p-5 space-y-4">
+            
+            <!-- Badge Header & Action Icons -->
+            <div class="flex items-center justify-between gap-2">
+              <span class="px-2.5 py-1 text-[11px] font-bold rounded-lg bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+                ${escapeHtml(p.level)}
+              </span>
+              <div class="flex items-center gap-1 opacity-70 group-hover:opacity-100 transition-opacity no-print">
+                <button onclick="editProjectFromPortfolio('${p.id}')" title="Edit Project" class="w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors">
+                  <i class="fa-solid fa-pen text-xs"></i>
+                </button>
+                <button onclick="duplicateProject('${p.id}')" title="Duplicate Project" class="w-7 h-7 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors">
+                  <i class="fa-solid fa-copy text-xs"></i>
+                </button>
+                <button onclick="confirmDeleteProject('${p.id}')" title="Delete Project" class="w-7 h-7 rounded-lg hover:bg-red-50 dark:hover:bg-red-950 text-slate-500 hover:text-red-600 flex items-center justify-center transition-colors">
+                  <i class="fa-solid fa-trash-can text-xs"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Project Name -->
+            <div>
+              <h3 class="font-black text-slate-900 dark:text-white text-base leading-snug line-clamp-2">${escapeHtml(p.name)}</h3>
+              <p class="text-xs text-slate-400 mt-1 flex items-center gap-1">
+                <i class="fa-solid fa-location-dot text-brand-500 text-[10px]"></i> ${escapeHtml(p.location)}
+              </p>
+            </div>
+
+            <!-- Lead & Client Metadata Block -->
+            <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs space-y-1.5">
+              <div class="flex items-center gap-2">
+                <div class="w-6 h-6 rounded-full bg-slate-900 text-white font-black text-[10px] flex items-center justify-center">
+                  ${p.lead.split(' ').map(n=>n[0]).join('')}
+                </div>
+                <div>
+                  <span class="text-[10px] text-slate-400">Project In-Charge:</span>
+                  <span class="font-bold text-slate-800 dark:text-slate-200 ml-1">${escapeHtml(p.lead)}</span>
+                </div>
+              </div>
+              <div class="flex justify-between items-center text-[11px]">
+                <span class="text-slate-400">Client: <strong class="text-slate-700 dark:text-slate-300">${escapeHtml(p.client)}</strong></span>
+                <span class="text-slate-400">Target: <strong class="text-slate-700 dark:text-slate-300">${escapeHtml(p.targetDate || '15 Nov 2026')}</strong></span>
+              </div>
+            </div>
+
+            <!-- 4-Level Progress Bar Breakdown -->
+            <div class="space-y-2">
+              <div class="flex justify-between items-center text-xs">
+                <span class="font-bold text-slate-700 dark:text-slate-300">4-Level Completion</span>
+                <span class="font-black text-emerald-600 dark:text-emerald-400 text-sm">${m.overallWeighted.toFixed(1)}%</span>
+              </div>
+              <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden flex">
+                <div class="bg-emerald-500 h-full" style="width: ${m.overallWeighted}%"></div>
+              </div>
+              
+              <!-- Micro Phase Pills -->
+              <div class="grid grid-cols-4 gap-1 text-[10px] text-center pt-1 font-bold">
+                <div class="bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 p-1 rounded border border-blue-200 dark:border-blue-900">
+                  <div class="text-[9px] text-slate-400 font-semibold">1. DESIGN</div>
+                  <div>${m.avgDesign}%</div>
+                </div>
+                <div class="bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 p-1 rounded border border-amber-200 dark:border-amber-900">
+                  <div class="text-[9px] text-slate-400 font-semibold">2. FAB</div>
+                  <div>${m.avgFab}%</div>
+                </div>
+                <div class="bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-300 p-1 rounded border border-purple-200 dark:border-purple-900">
+                  <div class="text-[9px] text-slate-400 font-semibold">3. DISPATCH</div>
+                  <div>${m.avgDisp}%</div>
+                </div>
+                <div class="bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 p-1 rounded border border-emerald-200 dark:border-emerald-900">
+                  <div class="text-[9px] text-slate-400 font-semibold">4. INSTALL</div>
+                  <div>${m.avgInstall}%</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Card Footer Action -->
+          <div class="p-4 bg-slate-50 dark:bg-slate-950/60 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-xs font-bold">
+            <span class="text-slate-400">${m.totalTypes} signs · ${m.totalScope} units</span>
+            <button onclick="navigateTo('tracker', '${p.id}')" class="text-slate-900 dark:text-white hover:text-brand-500 flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
+              Open Tracking Table <i class="fa-solid fa-arrow-right text-[11px]"></i>
+            </button>
+          </div>
+        `;
+
+        grid.appendChild(card);
+      });
+    }
+
+    function setPortfolioPhaseFilter(phase) {
+      state.portfolioPhaseFilter = phase;
+      document.querySelectorAll('.port-phase-tab').forEach(btn => {
+        if (btn.dataset.phase === phase) {
+          btn.className = 'port-phase-tab px-3 py-1.5 rounded-lg font-bold transition-all bg-slate-900 text-white dark:bg-slate-800';
+        } else {
+          btn.className = 'port-phase-tab px-3 py-1.5 rounded-lg font-semibold text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white';
+        }
+      });
+      renderPortfolioView();
+    }
+
+    function filterPortfolio() {
+      renderPortfolioView();
+    }
+
+    // RENDER VIEW 2: TRACKER MATRIX VIEW
+    function renderTrackerView() {
+      const proj = state.projects[state.activeProjectId];
+      if (!proj) return;
+
+      // Update Header Metadata
+      document.getElementById('trackerProjectTitle').textContent = proj.name;
+      document.getElementById('metaClient').textContent = proj.client || 'Client';
+      document.getElementById('metaContractor').textContent = proj.contractor || 'Keystone Sign Studio';
+      document.getElementById('metaLocation').textContent = proj.location || 'Site Location';
+      document.getElementById('metaLead').textContent = proj.lead || 'Project Lead';
+      document.getElementById('metaPhone').textContent = proj.phone || '';
+
+      // Compute KPI Metrics
+      const m = calculateProjectMetrics(proj);
+      document.getElementById('kpiTypes').textContent = m.totalTypes;
+      document.getElementById('kpiRepeats').textContent = `${m.repeatCount} Repeat Runs`;
+      document.getElementById('kpiUnits').textContent = m.totalScope.toLocaleString();
+      document.getElementById('kpiInProduction').textContent = `${m.inProductionUnits} in production`;
+      document.getElementById('kpiOverallPct').textContent = `${m.overallWeighted.toFixed(1)}%`;
+
+      document.getElementById('kpiDesignPct').textContent = `${m.avgDesign}%`;
+      document.getElementById('kpiFabPct').textContent = `${m.avgFab}%`;
+      document.getElementById('kpiFabSub').textContent = `${m.fabDoneUnits} / ${m.totalScope} units done`;
+
+      document.getElementById('kpiDispatchPct').textContent = `${m.avgDisp}%`;
+      document.getElementById('kpiDispatchSub').textContent = `${m.dispDoneUnits} / ${m.totalScope} units on-site`;
+
+      document.getElementById('kpiInstallPct').textContent = `${m.avgInstall}%`;
+      document.getElementById('kpiInstallSub').textContent = `${m.installDoneUnits} / ${m.totalScope} erected`;
+
+      document.getElementById('totalSignCount').textContent = m.totalTypes;
+
+      // Filter Sign Items
+      const query = (document.getElementById('trackerSearchInput').value || '').toLowerCase();
+      const categoryFilter = document.getElementById('trackerCategorySelect').value;
+      const batchFilter = state.trackerBatchFilter;
+
+      const filteredSigns = (proj.signs || []).filter(s => {
+        const matchesQuery = !query || 
+          s.code.toLowerCase().includes(query) ||
+          s.title.toLowerCase().includes(query) ||
+          s.location.toLowerCase().includes(query) ||
+          s.materials.toLowerCase().includes(query);
+
+        const matchesCategory = categoryFilter === 'ALL' || s.category === categoryFilter;
+
+        let matchesBatch = true;
+        if (batchFilter === 'PARTIAL') matchesBatch = (parseInt(s.batchQty) < parseInt(s.totalScope));
+        if (batchFilter === 'REPEAT') matchesBatch = s.isRepeat === true;
+
+        return matchesQuery && matchesCategory && matchesBatch;
+      });
+
+      document.getElementById('showingSignCount').textContent = filteredSigns.length;
+
+      // Toggle Table vs Card View
+      const isTable = state.trackerDisplayMode === 'table';
+      document.getElementById('trackerTableContainer').classList.toggle('hidden', !isTable);
+      document.getElementById('trackerCardsContainer').classList.toggle('hidden', isTable);
+      document.getElementById('trackerEmptyState').classList.toggle('hidden', filteredSigns.length > 0);
+
+      if (isTable) {
+        renderTrackerTableRows(filteredSigns);
+      } else {
+        renderTrackerCards(filteredSigns);
+      }
+    }
+
+    function renderTrackerTableRows(signs) {
+      const tbody = document.getElementById('trackerTableBody');
+      tbody.innerHTML = '';
+
+      signs.forEach((s, idx) => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors group';
+
+        const balPending = Math.max(0, parseInt(s.totalScope) - parseInt(s.batchQty));
+
+        tr.innerHTML = `
+          <!-- SR # -->
+          <td class="p-3 text-center font-extrabold text-slate-400">${idx + 1}</td>
+
+          <!-- Sign Type & Order Tag -->
+          <td class="p-3">
+            <div class="font-black text-slate-900 dark:text-white text-xs">${escapeHtml(s.title)}</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="text-[10px] font-extrabold px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700">
+                Code: ${escapeHtml(s.code)}
+              </span>
+              <span class="text-[10px] text-slate-400 font-semibold">${escapeHtml(s.category)}</span>
+            </div>
+            <div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 truncate max-w-xs">${escapeHtml(s.location)}</div>
+            
+            ${s.isRepeat ? `
+              <div class="mt-1.5 p-1.5 rounded-md bg-amber-50 dark:bg-amber-950/50 border border-amber-200 dark:border-amber-800/80 text-[10px] font-bold text-amber-800 dark:text-amber-300 flex items-start gap-1">
+                <i class="fa-solid fa-copy text-amber-600 mt-0.5"></i>
+                <span>${escapeHtml(s.repeatNote || 'REV 2 REPEAT: Batch release active.')}</span>
+              </div>
+            ` : ''}
+          </td>
+
+          <!-- Elevation Drawing Thumbnail with Upload Overlay -->
+          <td class="p-3 text-center">
+            <div class="relative w-16 h-16 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-800 bg-slate-900 mx-auto group/img">
+              <img src="${s.image || VECTOR_DRAWINGS.pylon1}" alt="Elevation" class="w-full h-full object-cover cursor-pointer" onclick="openLightboxModal('${s.id}')">
+              
+              <!-- Direct Row Camera Upload Hover -->
+              <button onclick="triggerRowImageUpload('${s.id}')" title="Upload / Change Image" class="absolute inset-0 bg-slate-950/80 opacity-0 group-hover/img:opacity-100 flex items-center justify-center text-white text-xs transition-opacity font-bold gap-1 no-print">
+                <i class="fa-solid fa-camera text-sm"></i>
+              </button>
+            </div>
+          </td>
+
+          <!-- Quantities (Batch / Total) -->
+          <td class="p-3 text-center">
+            <div class="inline-flex items-center bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-1 mb-1">
+              <button onclick="adjustBatchQty('${s.id}', -1)" class="w-5 h-5 rounded-lg bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-black hover:bg-slate-200 flex items-center justify-center shadow-xs">
+                -
+              </button>
+              <span class="w-7 text-xs font-black text-slate-900 dark:text-white">${s.batchQty}</span>
+              <button onclick="adjustBatchQty('${s.id}', 1)" class="w-5 h-5 rounded-lg bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-black hover:bg-slate-200 flex items-center justify-center shadow-xs">
+                +
+              </button>
+            </div>
+            <div class="text-[10px] text-slate-400 font-bold">Scope: <strong class="text-slate-700 dark:text-slate-200">${s.totalScope} Units</strong></div>
+            ${balPending > 0 ? `
+              <span class="mt-0.5 inline-block px-1.5 py-0.5 text-[9px] font-black bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 rounded-full">
+                Bal: ${balPending} pending
+              </span>
+            ` : `
+              <span class="mt-0.5 inline-block px-1.5 py-0.5 text-[9px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 rounded-full">
+                100% in production
+              </span>
+            `}
+          </td>
+
+          <!-- Dimensions & Materials -->
+          <td class="p-3">
+            <div class="text-xs font-bold text-slate-800 dark:text-slate-200 flex items-center gap-1">
+              <i class="fa-solid fa-ruler-combined text-brand-500 text-[10px]"></i> ${escapeHtml(s.dimensions || 'Custom Size')}
+            </div>
+            <div class="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5 line-clamp-2">${escapeHtml(s.materials)}</div>
+          </td>
+
+          <!-- 1. Design Phase Selector -->
+          <td class="p-3">
+            <select onchange="updateSignStage('${s.id}', 'designPhase', this.value)" class="w-full text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-1.5 px-2 focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+              <option value="Pending" ${s.designPhase === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="CAD Drafting & Approval" ${s.designPhase === 'CAD Drafting & Approval' ? 'selected' : ''}>CAD Drafting</option>
+              <option value="Design Sign-off" ${s.designPhase === 'Design Sign-off' ? 'selected' : ''}>Design Sign-off</option>
+              <option value="Approved" ${s.designPhase === 'Approved' ? 'selected' : ''}>Approved</option>
+            </select>
+          </td>
+
+          <!-- Design Tick -->
+          <td class="p-3 text-center">
+            <button onclick="toggleSignTick('${s.id}', 'designTick')" class="px-2.5 py-1 text-[10px] font-black rounded-lg transition-colors border ${s.designTick === 'Done' ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800' : 'bg-slate-100 text-slate-500 border-slate-300 dark:bg-slate-800 dark:text-slate-400'}">
+              <i class="fa-solid ${s.designTick === 'Done' ? 'fa-circle-check text-emerald-500' : 'fa-circle-notch'}"></i>
+              ${s.designTick === 'Done' ? 'Done' : 'Pending'}
+            </button>
+          </td>
+
+          <!-- 2. Fabrication Phase Selector -->
+          <td class="p-3">
+            <select onchange="updateSignStage('${s.id}', 'fabPhase', this.value)" class="w-full text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-1.5 px-2 focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+              <option value="Pending" ${s.fabPhase === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="In Production" ${s.fabPhase === 'In Production' ? 'selected' : ''}>In Production</option>
+              <option value="Completed" ${s.fabPhase === 'Completed' ? 'selected' : ''}>Completed</option>
+            </select>
+          </td>
+
+          <!-- MFG Tick -->
+          <td class="p-3 text-center">
+            <button onclick="toggleSignTick('${s.id}', 'mfgTick')" class="px-2.5 py-1 text-[10px] font-black rounded-lg transition-colors border ${s.mfgTick === 'Done' ? 'bg-emerald-50 text-emerald-700 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800' : 'bg-slate-100 text-slate-500 border-slate-300 dark:bg-slate-800 dark:text-slate-400'}">
+              <i class="fa-solid ${s.mfgTick === 'Done' ? 'fa-circle-check text-emerald-500' : 'fa-clock'}"></i>
+              ${s.mfgTick === 'Done' ? 'Done' : 'Pending'}
+            </button>
+          </td>
+
+          <!-- 3. Dispatch Status Selector -->
+          <td class="p-3">
+            <select onchange="updateSignStage('${s.id}', 'dispatchStatus', this.value)" class="w-full text-xs font-semibold rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 py-1.5 px-2 focus:ring-2 focus:ring-slate-900 focus:outline-none dark:text-white">
+              <option value="Pending" ${s.dispatchStatus === 'Pending' ? 'selected' : ''}>Pending</option>
+              <option value="In Transit" ${s.dispatchStatus === 'In Transit' ? 'selected' : ''}>In Transit</option>
+              <option value="On-Site Delivered" ${s.dispatchStatus === 'On-Site Delivered' ? 'selected' : ''}>On-Site Delivered</option>
+              <option value="Installed" ${s.dispatchStatus === 'Installed' ? 'selected' : ''}>Installed</option>
+            </select>
+          </td>
+
+          <!-- Delete Action Column -->
+          <td class="p-3 text-center no-print">
+            <button onclick="confirmDeleteSign('${s.id}')" title="Delete Sign Specification" class="w-8 h-8 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-950/60 dark:hover:bg-red-900 text-red-600 dark:text-red-400 flex items-center justify-center transition-colors">
+              <i class="fa-solid fa-trash-can text-xs"></i>
+            </button>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderTrackerCards(signs) {
+      const container = document.getElementById('trackerCardsContainer');
+      container.innerHTML = '';
+
+      signs.forEach(s => {
+        const comp = calculateSignCompletion(s);
+        const card = document.createElement('div');
+        card.className = 'bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-sm space-y-4 flex flex-col justify-between';
+
+        card.innerHTML = `
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-extrabold px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200">${escapeHtml(s.code)}</span>
+              <button onclick="confirmDeleteSign('${s.id}')" class="text-slate-400 hover:text-red-500 text-xs">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+            <div class="flex items-start gap-3">
+              <img src="${s.image || VECTOR_DRAWINGS.pylon1}" class="w-16 h-16 rounded-xl object-cover bg-slate-900 cursor-pointer" onclick="openLightboxModal('${s.id}')">
+              <div>
+                <h4 class="font-black text-slate-900 dark:text-white text-sm">${escapeHtml(s.title)}</h4>
+                <p class="text-xs text-slate-400 mt-0.5">${escapeHtml(s.category)}</p>
+                <p class="text-[11px] text-slate-500 dark:text-slate-400 mt-1">${escapeHtml(s.location)}</p>
+              </div>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-100 dark:border-slate-800 text-xs space-y-1">
+              <div><strong>Scope:</strong> ${s.totalScope} Units (Batch: ${s.batchQty})</div>
+              <div><strong>Specs:</strong> ${escapeHtml(s.dimensions)}</div>
+              <div class="truncate"><strong>Materials:</strong> ${escapeHtml(s.materials)}</div>
+            </div>
+          </div>
+          <div class="pt-2 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+            <span class="text-xs font-bold text-slate-400">Completion:</span>
+            <span class="text-sm font-black text-emerald-600">${comp}%</span>
+          </div>
+        `;
+
+        container.appendChild(card);
+      });
+    }
+
+    function setTrackerBatchFilter(batch) {
+      state.trackerBatchFilter = batch;
+      document.querySelectorAll('.tracker-batch-tab').forEach(btn => {
+        if (btn.dataset.batch === batch) {
+          btn.className = 'tracker-batch-tab px-3 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800';
+        } else {
+          btn.className = 'tracker-batch-tab px-3 py-1 rounded-lg text-slate-600 dark:text-slate-400';
+        }
+      });
+      renderTrackerView();
+    }
+
+    function setTrackerDisplayMode(mode) {
+      state.trackerDisplayMode = mode;
+      document.getElementById('btnViewTable').className = mode === 'table' ? 'px-2.5 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800' : 'px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400';
+      document.getElementById('btnViewCards').className = mode === 'cards' ? 'px-2.5 py-1 rounded-lg bg-slate-900 text-white dark:bg-slate-800' : 'px-2.5 py-1 rounded-lg text-slate-600 dark:text-slate-400';
+      renderTrackerView();
+    }
+
+    // STATE MUTATORS (Row Operations)
+    function adjustBatchQty(signId, delta) {
+      const proj = state.projects[state.activeProjectId];
+      const sign = proj.signs.find(s => s.id === signId);
+      if (sign) {
+        const newBatch = (parseInt(sign.batchQty) || 1) + delta;
+        if (newBatch >= 1 && newBatch <= parseInt(sign.totalScope)) {
+          sign.batchQty = newBatch;
+          saveState();
+          renderTrackerView();
+        }
+      }
+    }
+
+    function updateSignStage(signId, stageKey, value) {
+      const proj = state.projects[state.activeProjectId];
+      const sign = proj.signs.find(s => s.id === signId);
+      if (sign) {
+        sign[stageKey] = value;
+        saveState();
+        renderTrackerView();
+        showToast(`Updated ${sign.code} stage`, 'info');
+      }
+    }
+
+    function toggleSignTick(signId, tickKey) {
+      const proj = state.projects[state.activeProjectId];
+      const sign = proj.signs.find(s => s.id === signId);
+      if (sign) {
+        sign[tickKey] = sign[tickKey] === 'Done' ? 'Pending' : 'Done';
+        saveState();
+        renderTrackerView();
+      }
+    }
+
+    // DELETE SIGN WORKFLOW
+    function confirmDeleteSign(signId) {
+      state.pendingDeleteSignId = signId;
+      const proj = state.projects[state.activeProjectId];
+      const sign = proj.signs.find(s => s.id === signId);
+      if (sign) {
+        document.getElementById('deleteSignMsg').textContent = `Are you sure you want to delete "${sign.code} - ${sign.title}"? This will recalculate all live project metrics immediately.`;
+        document.getElementById('modalDeleteSign').classList.remove('hidden');
+      }
+    }
+
+    function closeDeleteSignModal() {
+      state.pendingDeleteSignId = null;
+      document.getElementById('modalDeleteSign').classList.add('hidden');
+    }
+
+    document.getElementById('btnConfirmDeleteSign').onclick = function() {
+      if (!state.pendingDeleteSignId) return;
+      const proj = state.projects[state.activeProjectId];
+      const idx = proj.signs.findIndex(s => s.id === state.pendingDeleteSignId);
+      if (idx !== -1) {
+        const deletedCode = proj.signs[idx].code;
+        proj.signs.splice(idx, 1);
+        saveState();
+        closeDeleteSignModal();
+        renderTrackerView();
+        showToast(`Deleted sign specification ${deletedCode}`, 'error');
+      }
+    };
+
+    // DELETE PROJECT WORKFLOW
+    function confirmDeleteProject(projId) {
+      state.pendingDeleteProjectId = projId;
+      const proj = state.projects[projId];
+      if (proj) {
+        document.getElementById('deleteProjectMsg').textContent = `Are you sure you want to delete project "${proj.name}"? This cannot be undone.`;
+        document.getElementById('modalDeleteProject').classList.remove('hidden');
+      }
+    }
+
+    function closeDeleteProjectModal() {
+      state.pendingDeleteProjectId = null;
+      document.getElementById('modalDeleteProject').classList.add('hidden');
+    }
+
+    document.getElementById('btnConfirmDeleteProject').onclick = function() {
+      if (!state.pendingDeleteProjectId) return;
+      delete state.projects[state.pendingDeleteProjectId];
+      saveState();
+      closeDeleteProjectModal();
+      renderPortfolioView();
+      showToast('Project deleted', 'error');
+    };
+
+    // IMAGE UPLOADER ENGINE
+    function triggerRowImageUpload(signId) {
+      state.pendingRowUploadSignId = signId;
+      document.getElementById('rowFileInput').click();
+    }
+
+    function handleRowFileSelect(e) {
+      const file = e.target.files[0];
+      if (!file || !state.pendingRowUploadSignId) return;
+
+      processImageFile(file, (dataUrl) => {
+        const proj = state.projects[state.activeProjectId];
+        const sign = proj.signs.find(s => s.id === state.pendingRowUploadSignId);
+        if (sign) {
+          sign.image = dataUrl;
+          saveState();
+          renderTrackerView();
+          showToast(`Updated elevation drawing image for ${sign.code}`, 'success');
+        }
+        state.pendingRowUploadSignId = null;
+        e.target.value = '';
+      });
+    }
+
+    function setupAddSignDropzone() {
+      const dropzone = document.getElementById('addSignDropzone');
+      ['dragenter', 'dragover'].forEach(name => {
+        dropzone.addEventListener(name, (e) => { e.preventDefault(); dropzone.classList.add('border-slate-900', 'bg-slate-100'); });
+      });
+      ['dragleave', 'drop'].forEach(name => {
+        dropzone.addEventListener(name, (e) => { e.preventDefault(); dropzone.classList.remove('border-slate-900', 'bg-slate-100'); });
+      });
+      dropzone.addEventListener('drop', (e) => {
+        if (e.dataTransfer.files.length) processAddSignFile(e.dataTransfer.files[0]);
+      });
+    }
+
+    function handleAddSignFileSelect(e) {
+      if (e.target.files.length) processAddSignFile(e.target.files[0]);
+    }
+
+    function processAddSignFile(file) {
+      processImageFile(file, (dataUrl) => {
+        state.tempAddSignImageData = dataUrl;
+        document.getElementById('addSignPreviewImg').src = dataUrl;
+        document.getElementById('addSignFileName').textContent = file.name;
+        document.getElementById('dropzonePrompt').classList.add('hidden');
+        document.getElementById('dropzonePreview').classList.remove('hidden');
+      });
+    }
+
+    function clearAddSignImage(e) {
+      if (e) e.stopPropagation();
+      state.tempAddSignImageData = null;
+      document.getElementById('addSignFileInput').value = '';
+      document.getElementById('dropzonePrompt').classList.remove('hidden');
+      document.getElementById('dropzonePreview').classList.add('hidden');
+    }
+
+    function processImageFile(file, callback) {
+      if (!file.type.startsWith('image/')) {
+        showToast('Please select an image file', 'error');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(evt) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          const maxDim = 800;
+          let w = img.width, h = img.height;
+          if (w > h) {
+            if (w > maxDim) { h = Math.round((h * maxDim) / w); w = maxDim; }
+          } else {
+            if (h > maxDim) { w = Math.round((w * maxDim) / h); h = maxDim; }
+          }
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, w, h);
+          callback(canvas.toDataURL('image/jpeg', 0.82));
+        };
+        img.src = evt.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // CREATE PROJECT MODAL HANDLERS
+    function openCreateProjectModal() {
+      document.getElementById('modalCreateProject').classList.remove('hidden');
+    }
+    function closeCreateProjectModal() {
+      document.getElementById('modalCreateProject').classList.add('hidden');
+    }
+    function handleCreateProjectSubmit(e) {
+      e.preventDefault();
+      const newId = 'proj_' + Date.now();
+      const proj = {
+        id: newId,
+        name: document.getElementById('newProjName').value.trim(),
+        level: document.getElementById('newProjLevel').value,
+        client: document.getElementById('newProjClient').value.trim(),
+        contractor: 'Keystone Sign Studio',
+        location: document.getElementById('newProjLocation').value.trim() || 'Site Location',
+        targetDate: document.getElementById('newProjTarget').value.trim() || '15 Dec 2026',
+        lastUpdated: '15 Oct 2026',
+        lead: document.getElementById('newProjLead').value.trim(),
+        leadRole: 'Project Lead',
+        phone: document.getElementById('newProjPhone').value.trim() || '+91 98490 00000',
+        signs: []
+      };
+
+      state.projects[newId] = proj;
+      saveState();
+      closeCreateProjectModal();
+      navigateTo('tracker', newId);
+      showToast('Created new project', 'success');
+    }
+
+    function duplicateProject(projId) {
+      const orig = state.projects[projId];
+      if (!orig) return;
+      const dupId = 'proj_' + Date.now();
+      const dup = JSON.parse(JSON.stringify(orig));
+      dup.id = dupId;
+      dup.name = `${orig.name} (COPY)`;
+      state.projects[dupId] = dup;
+      saveState();
+      renderPortfolioView();
+      showToast('Duplicated project', 'info');
+    }
+
+    // EDIT PROJECT MODAL HANDLERS
+    function openEditProjectModal() {
+      const proj = state.projects[state.activeProjectId];
+      if (!proj) return;
+      document.getElementById('editProjName').value = proj.name;
+      document.getElementById('editProjClient').value = proj.client;
+      document.getElementById('editProjContractor').value = proj.contractor;
+      document.getElementById('editProjLocation').value = proj.location;
+      document.getElementById('editProjLevel').value = proj.level;
+      document.getElementById('editProjLead').value = proj.lead;
+      document.getElementById('editProjPhone').value = proj.phone;
+      document.getElementById('modalEditProject').classList.remove('hidden');
+    }
+
+    function editProjectFromPortfolio(projId) {
+      state.activeProjectId = projId;
+      openEditProjectModal();
+    }
+
+    function closeEditProjectModal() {
+      document.getElementById('modalEditProject').classList.add('hidden');
+    }
+
+    function handleEditProjectSubmit(e) {
+      e.preventDefault();
+      const proj = state.projects[state.activeProjectId];
+      if (proj) {
+        proj.name = document.getElementById('editProjName').value.trim();
+        proj.client = document.getElementById('editProjClient').value.trim();
+        proj.contractor = document.getElementById('editProjContractor').value.trim();
+        proj.location = document.getElementById('editProjLocation').value.trim();
+        proj.level = document.getElementById('editProjLevel').value;
+        proj.lead = document.getElementById('editProjLead').value.trim();
+        proj.phone = document.getElementById('editProjPhone').value.trim();
+        saveState();
+        closeEditProjectModal();
+        renderApp();
+        showToast('Updated project metadata', 'success');
+      }
+    }
+
+    // ADD SIGN SPECIFICATION MODAL HANDLERS
+    function openAddSignModal() {
+      clearAddSignImage();
+      document.getElementById('modalAddSign').classList.remove('hidden');
+    }
+
+    function closeAddSignModal() {
+      document.getElementById('modalAddSign').classList.add('hidden');
+    }
+
+    function toggleRepeatNoteField() {
+      const isChecked = document.getElementById('newSignIsRepeat').checked;
+      document.getElementById('repeatNoteContainer').classList.toggle('hidden', !isChecked);
+    }
+
+    function handleAddSignSubmit(e) {
+      e.preventDefault();
+      const proj = state.projects[state.activeProjectId];
+      if (!proj) return;
+
+      const isRepeat = document.getElementById('newSignIsRepeat').checked;
+
+      const sign = {
+        id: 'sgn_' + Date.now(),
+        code: document.getElementById('newSignCode').value.trim(),
+        title: document.getElementById('newSignTitle').value.trim(),
+        category: document.getElementById('newSignCategory').value,
+        location: 'Loc: ' + document.getElementById('newSignLocation').value.trim(),
+        batchQty: parseInt(document.getElementById('newSignBatchQty').value) || 1,
+        totalScope: parseInt(document.getElementById('newSignTotalScope').value) || 1,
+        dimensions: document.getElementById('newSignDimensions').value.trim() || 'Custom Dimensions',
+        materials: document.getElementById('newSignMaterials').value.trim() || 'Standard Architectural Finish',
+        designPhase: 'Pending',
+        designTick: 'Pending',
+        fabPhase: 'Pending',
+        mfgTick: 'Pending',
+        dispatchStatus: 'Pending',
+        isRepeat: isRepeat,
+        repeatNote: isRepeat ? document.getElementById('newSignRepeatNote').value.trim() : '',
+        image: state.tempAddSignImageData || VECTOR_DRAWINGS.pylon1
+      };
+
+      proj.signs.push(sign);
+      saveState();
+      closeAddSignModal();
+      renderTrackerView();
+      showToast(`Added sign spec ${sign.code}`, 'success');
+    }
+
+    // LIGHTBOX MODAL HANDLERS
+    function openLightboxModal(signId) {
+      const proj = state.projects[state.activeProjectId];
+      const sign = proj.signs.find(s => s.id === signId);
+      if (!sign) return;
+
+      document.getElementById('lbTitle').textContent = `${sign.code} - ${sign.title}`;
+      document.getElementById('lbSubtitle').textContent = `${sign.category} | ${sign.location}`;
+      document.getElementById('lbImage').src = sign.image || VECTOR_DRAWINGS.pylon1;
+
+      document.getElementById('lbSpecs').innerHTML = `
+        <div><strong class="text-slate-900 dark:text-white">Batch Qty:</strong> ${sign.batchQty} / ${sign.totalScope} Units</div>
+        <div><strong class="text-slate-900 dark:text-white">Dimensions:</strong> ${escapeHtml(sign.dimensions)}</div>
+        <div class="col-span-2"><strong class="text-slate-900 dark:text-white">Materials:</strong> ${escapeHtml(sign.materials)}</div>
+      `;
+
+      document.getElementById('lbChangeImgBtn').onclick = function() {
+        closeLightboxModal();
+        triggerRowImageUpload(signId);
+      };
+
+      document.getElementById('modalLightbox').classList.remove('hidden');
+    }
+
+    function closeLightboxModal() {
+      document.getElementById('modalLightbox').classList.add('hidden');
+    }
+
+    // EXPORT FUNCTIONS
+    function exportCSV() {
+      const proj = state.projects[state.activeProjectId];
+      if (!proj || !proj.signs || proj.signs.length === 0) {
+        showToast('No sign rows to export', 'error');
+        return;
+      }
+
+      let csv = 'Code,Title,Category,Location,BatchQty,TotalScope,Dimensions,Materials,DesignPhase,FabPhase,DispatchStatus\n';
+      proj.signs.forEach(s => {
+        csv += `"${s.code}","${s.title}","${s.category}","${s.location}",${s.batchQty},${s.totalScope},"${s.dimensions}","${s.materials}","${s.designPhase}","${s.fabPhase}","${s.dispatchStatus}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `${proj.name.replace(/[^a-zA-Z0-9]/g, '_')}_Matrix.csv`;
+      a.click();
+      showToast('Exported CSV', 'info');
+    }
+
+    function exportHTMLBundle() {
+      showToast('Preparing single-file HTML bundle for domain deployment', 'info');
+      window.print();
+    }
+
+    // DARK MODE & TOAST UTILITIES
+    function toggleDarkMode() {
+      document.documentElement.classList.toggle('dark');
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl shadow-xl text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 text-white ' + 
+        (type === 'success' ? 'bg-emerald-800' : type === 'error' ? 'bg-red-800' : 'bg-slate-900');
+
+      toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-circle-check text-emerald-400' : type === 'error' ? 'fa-triangle-exclamation text-red-400' : 'fa-circle-info text-brand-400'}"></i> ${escapeHtml(msg)}`;
+      container.appendChild(toast);
+
+      setTimeout(() => { toast.classList.remove('translate-y-2', 'opacity-0'); }, 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', '-translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 2500);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m]));
+    }
+  </script>
+</body>
+</html>
